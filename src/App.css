@@ -47,9 +47,9 @@ h1 {
   font-size: 72pt;
   font-weight: bold;
   text-align: right;
-  letter-spacing: -8px;
+  letter-spacing: 2px;
   color: #666;
-  margin: -40px 0px;
+  padding: 0px 10px;
 }
 
 p {
