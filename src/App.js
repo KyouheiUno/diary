@@ -5,20 +5,37 @@ import './App.css';
 
 class App extends Component {
 
+  msgStyle = {
+    fontSize: "24px",
+    color: "#900",
+    margin: "20px 0px",
+    padding: "5px",
+    borderBottom: "2px solid #900"
+  }
+  btnStyle = {
+    fontSize: "20px",
+    padding: "0px 10px"
+  }
   //コンストラクターを定義
   constructor(props) {
     super();
-    this.title = props.title;
-    this.message = props.message;
+    this.state = {
+      msg: "Hello"
+    };
+    //関数を定義する
+    let timer = setInterval(()=>{
+      this.setState((state)=>({
+        msg: state.msg + "!"
+      }));
+    }, 5000);
   }
 
   render() {
     return (
       <div>
         <h1>React</h1>
-        <Member name="宇野拓哉" message="よろしくお願いします" age="29" />
-        <Member name="斎藤和成" message="Reactの勉強中です" age="35" />
-        <Member name="近藤勇" message="JSの勉強もしていきたいです" age="18" /> 
+        <p style={this.msgStyle}>{this.state.msg}</p>
+        <p style={this.msgStyle}>{this.props.msg}</p>
       </div>
     );
   }

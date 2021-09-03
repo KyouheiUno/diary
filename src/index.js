@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App title="App" message="This is App component!!"/>
+    <App msg="Hello Component App" />
   </React.StrictMode>,
   document.getElementById('root')
 );
