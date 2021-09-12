@@ -1,8 +1,5 @@
-import { sortedLastIndex } from 'lodash';
 import React, { Component} from 'react';
-import Member from './Member';
 import './App.css';
-import Q from 'q';
 
 //コンポーネントを定義
 class App extends Component {
@@ -13,27 +10,6 @@ class App extends Component {
     "This is list sample"
   ]
 
-  //テーブルのデータを設定
-  tableData = [
-    "名前",
-    "生年月日",
-    "身長",
-    "体重",
-    "性別"
-  ]
-  //テーブルのセルのデータを設定
-  tableValue = [
-    "宇野恭平",
-    "19920726",
-    "175",
-    "67",
-    "男"
-  ]
-  //テーブルの枠のスタイルを設定
-  tableStyle = {
-    border: "1px solid black",
-    padding: "8px"
-  }
   //メッセージのスタイルを設定
   msgStyle = {
     fontSize: "20pt",
@@ -56,18 +32,7 @@ class App extends Component {
         <h1>React</h1>
         <h2 style={this.msgStyle}>show list.</h2>
         <List title="サンプル・リスト" data={this.data} />
-        <table style={this.tableStyle}>
-          <tr>
-            {this.tableData.map( (items) =>
-              <Table value={items} tableStyle={this.tableStyle}/> )
-            }
-          </tr>
-          <tr>
-            {this.tableValue.map( (items) =>
-              <Table value={items} tableStyle={this.tableStyle}/> )
-            }
-          </tr>
-        </table>
+        <Table />
       </div>
     )
   }
@@ -126,9 +91,48 @@ class Item extends Component {
 
 //テーブルコンポーネントを定義
 class Table extends Component {
+
+  //テーブルのデータを設定
+  tableData = [
+    "名前",
+    "生年月日",
+    "身長",
+    "体重",
+    "性別"
+  ]
+  //テーブルのセルのデータを設定
+  tableValue = [
+    "宇野恭平",
+    "19920726",
+    "175",
+    "67",
+    "男"
+  ]
+  //テーブルの枠のスタイルを設定
+  tableStyle = {
+    border: "1px solid black",
+    padding: "8px"
+  }
+
   render(){
+    let tableStyle = this.tableStyle
     return(
-      <td style={this.props.tableStyle}>{this.props.value}</td>
+      <table>
+        <thead>
+          <tr>
+            {this.tableData.map( (items) =>
+              <th style={tableStyle} key={items}>{items}</th> )
+            }
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {this.tableValue.map( (items) =>
+              <td style={tableStyle} key={items}>{items}</td> )
+            }
+          </tr>
+        </tbody>
+      </table>
     )
   }
 }
