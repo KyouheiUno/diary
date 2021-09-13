@@ -4,12 +4,6 @@ import './App.css';
 //コンポーネントを定義
 class App extends Component {
 
-  data = [
-    "これはリストのサンプルです",
-    "配列をリストに変換します",
-    "This is list sample"
-  ]
-
   //メッセージのスタイルを設定
   msgStyle = {
     fontSize: "20pt",
@@ -22,117 +16,67 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      list: this.data
+      message: "type your name"
     };
+  //関数のバインド処理
+  this.doChange = this.doChange.bind(this);
+  this.doSubmit = this.doSubmit.bind(this);
+  }
+
+  //chengeメソッドを定義
+  doChange(event) {
+    this.input = event.target.value;
+  }
+
+  //doSubmitメソッドを定義
+  doSubmit(event) {
+    this.setState({
+      message: "Hello, " + this.input + "!!"
+    });
+    event.preventDefault(); //デフォルトの機能を抑止するメソッド
   }
 
   render(){
-    return (
+    return(
       <div>
         <h1>React</h1>
-        <h2 style={this.msgStyle}>show list.</h2>
-        <List title="サンプル・リスト" data={this.data} />
-        <Table />
+        <Message title="Children!">
+          これはコンポーネント内のコンテンツです。
+          マルでテキストを分割し、リストにして表示しています。
+          改行は必要ありません。
+        </Message>
       </div>
     )
   }
 }
 
-//リストコンポーネントを新たに定義
-class List extends Component {
-  number = 1;
+class Message extends Component {
 
-  title = {
-    fontSize: "20pt",
-    fontWeight: "bold",
-    color: "blue"
-  };
-
-  render(){
-    let data = this.props.data
-    return (
-      <div>
-        <p style={this.title}>{this.props.title}</p>
-        <ul>
-          {data.map((item) =>
-            <Item number={this.number++} value={item} key={this.number} /> )
-          }
-        </ul>
-      </div>
-    )
-  }
-}
-
-//アイテムコンポーネントを新たに定義
-class Item extends Component {
-  //CSSを定義
   li = {
-    listStyleType: "square",
     fontSize: "16pt",
     color: "#06",
     margin: "0px",
-    padding: "red"
+    padding: "0px"
   }
 
-  num = {
-    fontWeight: "bold",
-    color: "red"
-  }
+  render() {
+    let content = this.props.children;
+    let array = content.split("。");
+    let array2 = [];
+    for(let i = 0; i < array.length; i++) {
+      if(array[i].trim() !== ""){
+        array2.push(array[i]);
+      }
+    }
 
-  render(){
-    return (
-      <li style={this.li}>
-        <span style={this.num}>[{this.props.number}]</span>
-          {this.props.value}
-      </li>
-    );
-  }
-}
-
-//テーブルコンポーネントを定義
-class Table extends Component {
-
-  //テーブルのデータを設定
-  tableData = [
-    "名前",
-    "生年月日",
-    "身長",
-    "体重",
-    "性別"
-  ]
-  //テーブルのセルのデータを設定
-  tableValue = [
-    "宇野恭平",
-    "19920726",
-    "175",
-    "67",
-    "男"
-  ]
-  //テーブルの枠のスタイルを設定
-  tableStyle = {
-    border: "1px solid black",
-    padding: "8px"
-  }
-
-  render(){
-    let tableStyle = this.tableStyle
-    return(
-      <table>
-        <thead>
-          <tr>
-            {this.tableData.map( (items) =>
-              <th style={tableStyle} key={items}>{items}</th> )
-            }
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            {this.tableValue.map( (items) =>
-              <td style={tableStyle} key={items}>{items}</td> )
-            }
-          </tr>
-        </tbody>
-      </table>
+    let list = array2.map( (value, key) => (
+      <li style={this.li} key={key}>{value}.</li>
+    ));
+    return ( 
+      <div>
+        <h2>{this.props.title}</h2>
+        <ol>{list}</ol>
+      </div>
     )
   }
 }
