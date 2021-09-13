@@ -1,61 +1,63 @@
 import React, { Component} from 'react';
 import './App.css';
 
-//コンポーネントを定義
+let data = {
+  title: 'Title',
+  message: 'This is sample message',
+  description: '説明文を記載致します。'
+}
+
+//コンテキストを設定
+const SampleContext = React.createContext(data);
+
 class App extends Component {
-  input = '';
-
-  msgStyle = {
-    fontSize: "20pt",
-    color: "#900",
-    margin: "20px 0px",
-    padding: "5px"
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      message: 'type your name'
-    };
-    this.doCheck = this.doCheck.bind(this);
-  }
-
-  doCheck(event) {
-    alert(event.target.value + "は長すぎます(最大10文字)");
-  }
   
-  render(){
-    return(
+  newdata = {
+    title: 'プロバイダーで変更をしたタイトルです。',
+    message: 'プロバイダーで変更をしたメッセージです。',
+    description: 'プロバイダーで変更をした説明文です。'
+  }
+
+  render() {
+    return (
       <div>
-        <h1>React</h1>
-        <h2>{this.state.message}</h2>
-        <Message maxlength="10" onCheck={this.doCheck} />
+        <h1>Context</h1>
+        <SampleContext.Provider value={this.newdata}>
+          <Title />
+          <Message />
+        </SampleContext.Provider>
+        <Title />
+        <Message />
+        <Title />
+        <Message />
+      </div>
+    )
+  }
+}
+
+class Title extends Component {
+  // コンテキストを使えるように定義する
+  static contextType = SampleContext;
+  render() {
+    return (
+      <div>
+        <h2>{this.context.title}</h2>
+        <h2>{this.context.description}</h2>
       </div>
     )
   }
 }
 
 class Message extends Component {
-  inputStyle = {
-    fontSize: "12pt",
-    padding: "5px"
-  }
+  //コンテキストを使えるように設定する
+  static contextType = SampleContext;
 
-  constructor(props) {
-    super(props);
-    this.doChange = this.doChange.bind(this);
-  }
-
-  doChange(event) {
-    if(event.target.value.length > this.props.maxlength) {
-      this.props.onCheck(event);
-      event.target.value = event.target.value.substr(0, this.props.maxlength);
-    }
-  }
   render() {
-    return (
-      <input type="text" style={this.inputStyle} onChange={this.doChange} />
-    ) 
+    return(
+      <div>
+        <h2>{this.context.message}</h2>
+      </div>
+    )
   }
 }
 
