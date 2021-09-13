@@ -3,8 +3,8 @@ import './App.css';
 
 //コンポーネントを定義
 class App extends Component {
+  input = '';
 
-  //メッセージのスタイルを設定
   msgStyle = {
     fontSize: "20pt",
     color: "#900",
@@ -12,72 +12,50 @@ class App extends Component {
     padding: "5px"
   }
 
-  //コンストラクターを定義
   constructor(props) {
     super(props);
     this.state = {
-      message: "type your name"
+      message: 'type your name'
     };
-  //関数のバインド処理
-  this.doChange = this.doChange.bind(this);
-  this.doSubmit = this.doSubmit.bind(this);
+    this.doCheck = this.doCheck.bind(this);
   }
 
-  //chengeメソッドを定義
-  doChange(event) {
-    this.input = event.target.value;
+  doCheck(event) {
+    alert(event.target.value + "は長すぎます(最大10文字)");
   }
-
-  //doSubmitメソッドを定義
-  doSubmit(event) {
-    this.setState({
-      message: "Hello, " + this.input + "!!"
-    });
-    event.preventDefault(); //デフォルトの機能を抑止するメソッド
-  }
-
+  
   render(){
     return(
       <div>
         <h1>React</h1>
-        <Message title="Children!">
-          これはコンポーネント内のコンテンツです。
-          マルでテキストを分割し、リストにして表示しています。
-          改行は必要ありません。
-        </Message>
+        <h2>{this.state.message}</h2>
+        <Message maxlength="10" onCheck={this.doCheck} />
       </div>
     )
   }
 }
 
 class Message extends Component {
-
-  li = {
-    fontSize: "16pt",
-    color: "#06",
-    margin: "0px",
-    padding: "0px"
+  inputStyle = {
+    fontSize: "12pt",
+    padding: "5px"
   }
 
-  render() {
-    let content = this.props.children;
-    let array = content.split("。");
-    let array2 = [];
-    for(let i = 0; i < array.length; i++) {
-      if(array[i].trim() !== ""){
-        array2.push(array[i]);
-      }
-    }
+  constructor(props) {
+    super(props);
+    this.doChange = this.doChange.bind(this);
+  }
 
-    let list = array2.map( (value, key) => (
-      <li style={this.li} key={key}>{value}.</li>
-    ));
-    return ( 
-      <div>
-        <h2>{this.props.title}</h2>
-        <ol>{list}</ol>
-      </div>
-    )
+  doChange(event) {
+    if(event.target.value.length > this.props.maxlength) {
+      this.props.onCheck(event);
+      event.target.value = event.target.value.substr(0, this.props.maxlength);
+    }
+  }
+  render() {
+    return (
+      <input type="text" style={this.inputStyle} onChange={this.doChange} />
+    ) 
   }
 }
 
